@@ -77,11 +77,14 @@ async function Page({ params }: { params: { id: string } }) {
 
           <TabsContent value='requests' className='w-full text-light-1'>
             {/* @ts-ignore */}
-            <ThreadsTab
+            {/* <ThreadsTab
               currentUserId={user.id}
               accountId={communityDetails._id}
               accountType='Community'
-            />
+            /> */}
+            <div className="w-full p-10 mt-8 flex justify-center items-center">
+              There are no requests till now
+            </div>
           </TabsContent>
         </Tabs>
       </div>

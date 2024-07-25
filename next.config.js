@@ -10,6 +10,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    domains: ['utfs.io'], // Add the domain here
     remotePatterns: [
       {
         protocol: "https",
