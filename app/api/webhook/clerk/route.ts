@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+// i take this resource from github repo and modify according to my needs
 // Resource: https://clerk.com/docs/users/sync-data-to-your-backend
 // Above article shows why we need webhooks i.e., to sync data to our backend
 
@@ -10,13 +11,15 @@ import { headers } from "next/headers";
 import { IncomingHttpHeaders } from "http";
 
 import { NextResponse } from "next/server";
+
+//all methods defined in community.actions.ts file in lib/actions folder
 import {
   addMemberToCommunity,
   createCommunity,
   deleteCommunity,
   removeUserFromCommunity,
   updateCommunityInfo,
-} from "@/lib/actions/community.actions";
+} from "@/lib/actions/community.actions"; 
 
 // Resource: https://clerk.com/docs/integration/webhooks#supported-events
 // Above document lists the supported events
@@ -50,6 +53,7 @@ export const POST = async (request: Request) => {
 
   let evnt: Event | null = null;
 
+  //here we use try to implement error handling of the webhook verification and return a 400 status code if the verification fails
   try {
     evnt = wh.verify(
       JSON.stringify(payload),
@@ -65,7 +69,7 @@ export const POST = async (request: Request) => {
   if (eventType === "organization.created") {
     // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/CreateOrganization
     // Show what evnt?.data sends from above resource
-    const { id, name, slug, logo_url, image_url, created_by } =
+    const { id, name, slug, logo_url, image_url, created_by } = //slug is a unique identifier for the organization
       evnt?.data ?? {};
 
     try {
@@ -76,7 +80,7 @@ export const POST = async (request: Request) => {
         name,
         slug,
         logo_url || image_url,
-        "org bio",
+        "organisation bio",
         created_by
       );
 

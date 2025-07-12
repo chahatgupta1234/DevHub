@@ -8,7 +8,10 @@ import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 import { sidebarLinks } from "@/constants";
 
 const LeftSidebar = () => {
+  //use router to redirect the route to sign-in page when we logout from leftside bar logout button
   const router = useRouter();
+
+  //to check which link is active now in leftside bar so that highlight it
   const pathname = usePathname();
 
   const { userId } = useAuth();

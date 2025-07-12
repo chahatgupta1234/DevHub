@@ -62,7 +62,7 @@ export async function createThread({ text, author, communityId, path }: Params
 
     const communityIdObject = await Community.findOne(
       { id: communityId },
-      { _id: 1 }
+      { _id: 1 } //only id and _id will be returned as well as it is the default field in the result object
     );
 
     const createdThread = await Thread.create({
@@ -83,7 +83,7 @@ export async function createThread({ text, author, communityId, path }: Params
       });
     }
 
-    revalidatePath(path);
+    revalidatePath(path); // Revalidate the path to update the cache on the next request to the page for fast rendering
   } catch (error: any) {
     throw new Error(`Failed to create thread: ${error.message}`);
   }
@@ -126,7 +126,7 @@ export async function deleteThread(id: string, path: string): Promise<void> {
       [
         ...descendantThreads.map((thread) => thread.author?._id?.toString()), // Use optional chaining to handle possible undefined values
         mainThread.author?._id?.toString(),
-      ].filter((id) => id !== undefined)
+      ].filter((id) => id !== undefined) //it will remove the undefined values from the array of author ids
     );
 
     const uniqueCommunityIds = new Set(
@@ -141,8 +141,8 @@ export async function deleteThread(id: string, path: string): Promise<void> {
 
     // Update User model
     await User.updateMany(
-      { _id: { $in: Array.from(uniqueAuthorIds) } },
-      { $pull: { threads: { $in: descendantThreadIds } } }
+      { _id: { $in: Array.from(uniqueAuthorIds) } }, // Convert the Set to an Array
+      { $pull: { threads: { $in: descendantThreadIds } } } // pull is used to remove the thread from the user's threads array
     );
 
     // Update Community model
@@ -159,7 +159,6 @@ export async function deleteThread(id: string, path: string): Promise<void> {
 
 
 //fetching the thread by using its id also fetch comments of that thread and comments of comment also
-
 export async function fetchThreadById(threadId: string) {
   connectToDB();
 
@@ -175,7 +174,7 @@ export async function fetchThreadById(threadId: string) {
         path: "community",
         model: Community,
         select: "_id id name image",
-      }) // Populate the community field with _id and name
+      }) // Populate the community field with _id, name and image 
       .populate({
         path: "children", // Populate the children field
         populate: [

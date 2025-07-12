@@ -2,10 +2,10 @@
 
 import * as z from "zod";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"; //it is used to use the form and clear its prev data used with zodResolver
 import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod"; // used to validate the form with zod
 
 import {
   Form,
@@ -44,6 +44,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
   const [files, setFiles] = useState<File[]>([]);
 
+  //useForm is a hook that is used to use the form and clear its prev data
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
     defaultValues: {

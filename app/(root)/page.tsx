@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 
 import ThreadCard from "@/components/cards/ThreadCard";
 import Pagination from "@/components/shared/Pagination";
@@ -25,7 +26,11 @@ async function Home({
 
   return (
     <>
-      <h1 className='head-text text-left'>Home</h1>
+      <div className="flex justify-between">
+        <h1 className='head-text text-left'>Home</h1>
+        <UserButton afterSignOutUrl="/" />
+      </div>
+      
 
       <section className='mt-9 flex flex-col gap-10'>
         {result.posts.length === 0 ? (
@@ -45,8 +50,11 @@ async function Home({
                 comments={post.children}
               />
             ))}
+            
           </>
         )}
+
+
       </section>
 
       <Pagination

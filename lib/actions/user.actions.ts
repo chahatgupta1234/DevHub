@@ -55,7 +55,7 @@ export async function updateUser({
     );
 
     if (path === "/profile/edit") {
-      revalidatePath(path);
+      revalidatePath(path); // it is used to update the page with new data and revalidate the cache of the page 
     }
   } catch (error: any) {
     throw new Error(`Failed to create/update user: ${error.message}`);
@@ -67,7 +67,7 @@ export async function fetchUserPosts(userId: string) {
     connectToDB();
 
     // Find all threads authored by the user with the given userId
-    const threads = await User.findOne({ id: userId }).populate({
+    const threads = await User.findOne({ id: userId }).populate({ //populate is used to take that whole data from different model, without populate it only shows another models id
       path: "threads",
       model: Thread,
       populate: [
@@ -119,7 +119,7 @@ export async function fetchUsers({
 
     // Create an initial query object to filter users.
     const query: FilterQuery<typeof User> = {
-      id: { $ne: userId }, // Exclude the current user from the results.
+      id: { $ne: userId }, // Exclude the current user from the results. ne = not equals
     };
 
     // If the search string is not empty, add the $or operator to match either username or name fields.
@@ -138,6 +138,7 @@ export async function fetchUsers({
       .skip(skipAmount)
       .limit(pageSize);
 
+    console.log("Fetching users with query:", query);
     // Count the total number of users that match the search criteria (without pagination).
     const totalUsersCount = await User.countDocuments(query);
 
@@ -163,7 +164,7 @@ export async function getActivity(userId: string) {
     // Collect all the child thread ids (replies) from the 'children' field of each user thread and collect in one single array
     const childThreadIds = userThreads.reduce((acc, userThread) => {
       return acc.concat(userThread.children);
-    }, []);
+    }, []); //reduce starts with an empty array [] as the initial value (acc), and concatenates each thread’s children array to this accumulator.
 
     // Find and return the child threads (replies) excluding the ones created by the same user
     const replies = await Thread.find({

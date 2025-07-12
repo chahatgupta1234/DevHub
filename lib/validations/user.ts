@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from "zod"; //it import all things like string, min, max, number, etc from zod
 
 export const UserValidation = z.object({
   profile_photo: z.string().url().nonempty(),

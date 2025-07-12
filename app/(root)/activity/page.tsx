@@ -14,6 +14,8 @@ async function Page() {
   
   const activity = await getActivity(userInfo._id);
 
+  //basically it fetches all the children and shows in activity page only by their author name (who did comment on post)
+
   return (
     <>
       <h1 className='head-text'>Activity</h1>
@@ -42,7 +44,7 @@ async function Page() {
             ))}
           </>
         ) : (
-          <p className='!text-base-regular text-light-3'>No activity yet</p>
+          <p className='!text-base-regular text-light-3'>No activity yet</p> // ! is used in tailwind css for important css it should be apply
         )}
       </section>
     </>
